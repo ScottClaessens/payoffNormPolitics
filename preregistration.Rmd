@@ -1,0 +1,270 @@
+---
+title: "Pre-Registration Document"
+author: "Scott Claessens"
+date: "`r format(Sys.Date())`"
+bibliography: r-references.bib
+output:
+  pdf_document:
+    number_sections: true
+urlcolor: blue
+header-includes: \usepackage[T1]{fontenc}
+---
+
+**Project working title:** Payoff-dependent utility, norm-dependent utility, and political ideology
+
+# Hypotheses
+
+1. **Hypothesis 1.** The probability of making a non-selfish decision in binary Dictator Games will be positively predicted by (a) the difference in payoffs between non-selfish and selfish decisions (payoff-dependent utility), and (b) the difference in normative ratings between non-selfish and selfish decisions (norm-dependent utility).
+3. **Hypothesis 2.** The interaction between payoff-dependent utility and Social Dominance Orientation will be positive.
+4. **Hypothesis 3.** The interaction between norm-dependent utility and Right Wing Authoritarianism will be positive.
+
+# Methods
+
+## Power analysis
+
+Our power analysis method is adapted from [this series of blog posts](https://solomonkurz.netlify.app/post/bayesian-power-analysis-part-i/) on power analysis for Bayesian regression models. For our power analysis, we first load previous data from @Panizza2019, fit a multilevel Bayesian logistic regression model to this dataset (for model specification, see Analysis Plan: Hypothesis 1), and estimate payoff-dependent utility and norm-dependent utility parameters for each participant. We then set the power analysis sample size $N$ and run 100 simulations. For each simulation:
+
+1. We sample $N$ participants with replacement from previous data.
+2. We simulate mean Social Dominance Orientation values for participants that are normally distributed and positively correlated with the payoff-dependent utility parameter (*r* = 0.24). This effect size is estimated from previous research linking Social Dominance Orientation to Dictator Game behaviour [@Claessens2020].
+3. We simulate mean Right Wing Authoritarianism values for participants that are normally distributed and positively correlated with the norm-dependent utility parameter (*r* = 0.20). This effect size is estimated from previous research linking Right Wing Authoritarianism to behaviour in a Rule Following Task [@Fischer_unpublished] which is related to the norm-dependent utility parameter [@Panizza2019].
+4. We then fit a Bayesian multilevel logistic regression model with both interaction effects to this simulated dataset (for model specification, see *e.g.* Analysis Plan: Hypotheses 2 and 3).
+
+We are interested in the two interaction parameters from the 100 fitted models. The proportion of simulations in which these parameters have 95% credible intervals above zero is our measure of statistical power. This power analysis suggested that, to achieve at least 90% power on both interaction parameters, we would require a sample size of 450 participants.
+
+## Data collection
+
+470 participants (450 + 20 buffer for exclusions) from the United States will be sampled from [Prolific](https://prolific.co) in a single session of data collection. Participants are required to have a 95% approval rating on the site to be eligible for the study.
+
+## Procedure
+
+The study will be conducted on [Qualtrics](https://www.qualtrics.com/). In the study, participants can earn "points" which are converted to bonus payment at a rate of 1 point = \pounds0.02. The survey will consist of the following parts [procedure adapted from @Panizza2019]:
+
+1. **Mini Dictator Games.** Participants will complete 18 'mini Dictator Games' in which they must choose between two possible distributions of 60 points between themselves and another participant. For example, in one mini Dictator Game they must choose between (1) keeping 30 points for themselves and giving 30 points to the other participant (non-selfish option), or (2) keeping all 60 points and giving nothing to the other participant (selfish option). Each mini Dictator Game will appear in a randomised order. Participants are truthfully told that, after the study, one mini Dictator Game will be randomly chosen for payment, all participants will be randomly matched into pairs, and one participant will be randomly selected as the dictator.
+2. **Norm Elicitation.** After completing the mini Dictator Games, participants will evaluate the social appropriateness of each possible Dictator Game split using the Krupka-Weber norm elicitation method [@Krupka2013]. For each possible split, participants will use a four-point Likert scale to rate the social appropriateness level *that they think most other participants will choose for this split*. Participants are truthfully told that, after the study, one split will be chosen at random and, if their rating matched the majority in the session, they will be paid a bonus \pounds0.50.
+3. **Rule Following Task.** Participants will complete a task [adapted from @Kimbrough2018] in which they must place 30 balls in one of two buckets (randomly counterbalanced). Participants will earn 1 point per ball in one bucket, and 2 points per ball in the other bucket. However, participants are told that the "rule" is to place the balls in the former bucket, earning them less money. The number of balls they place in the former bucket is used as a measure of rule following.
+4. **Berlin Estimate AdjuStment Task (BEAST).** Participants will complete a task [adapted from @Molleman2019] in which they must estimate the number of animals in a briefly presented image. Participants first provide an initial estimate, then see an estimate from a previous participant, and can then update their initial estimate accordingly. Participants' shift towards the social information is captured by a value between 0 (no shift) to 1 (shifted entirely to social information). We pay participants by randomly choosing a round and determining the distance between their estimate and the correct answer: 100 points - (distance * 5).
+5. **Questionnaire.** Participants will complete a questionnaire with the following scales: Social Dominance Orientation [@Sidanius2001], Right Wing Authoritarianism [@Altemeyer1996], and Economic and Social Conservatism [@Everett2013]. We also ask participants their age, gender, education, and political party support.
+
+The Rule Following Task, BEAST, and Questionnaire blocks will randomly appear before or after the Mini DGs and Norm Elicitation blocks to control for order effects. 
+
+Participants will be paid a \pounds3.75 base rate for participating (all participants are paid in GBP on Prolific). Since the survey is estimated to take up to 30 minutes, this base rate is more than Prolific's recommended minimum payment of \pounds7.50/hr. After the study, participants will also earn a bonus of between \pounds0.00 - \pounds1.20 for the mini Dictator Games, between \pounds0.60 - \pounds1.20 for the Rule Following Task, between \pounds0.00 - \pounds2.00 for the BEAST, and possibly a bonus \pounds0.50 for the normative evaluations.
+
+## Exclusion criteria
+
+We will exclude participants via listwise deletion if *any* of the following criteria are met:
+
+1. **Inattentive.** Participants who fail either of two attention checks: (1) Please answer the following maths question: 4 + 3 (2) Please type the
+word 'HELLO' in lower case letters, with a space in between each letter.
+2. **Flatliners.** Participants who answer grid questions in the same manner or create patterns in grids.
+3. **Speeders.** Participants who complete the survey in four minutes or less.
+4. **Bad verbatims.** Participants who answer open-ended questions by way of keyboard banging or typing illogical answers.
+5. **Bots.** Participants who fail the CAPTCHA at the start of the survey.
+
+## Variables measured
+
+```{r, echo=F}
+panderOptions("table.alignment.default", "left")
+tibble(
+  Variable = c("DG01","DG02","DG03","DG04","DG05","DG06","DG07",
+               "DG08","DG09","DG10","DG11","DG12","DG13","DG14",
+               "DG15","DG16","DG17","DG18","Norm01","Norm02","Norm03",
+               "Norm04","Norm05","Norm06","Norm07","Norm08","Norm09",
+               "Norm10","Norm11","Norm12","Norm13","Norm14","Norm15",
+               "Norm16","Norm17","Norm18","Norm19","SDO1","SDO2","SDO3",
+               "SDO4r","SDO5r","SDO6r","RWA1","RWA2","RWA3","RWA4r",
+               "RWA5r","RWA6r","RuleFollowing","BEAST1","BEAST2","BEAST3",
+               "BEAST4","BEAST5","EC1","EC2r","EC3","EC4","EC5",
+               "SC1r","SC2","SC3","SC4","SC5","SC6","SC7","PolParty",
+               "Education","Age","Gender"),
+  Description = c("DG splits: 00/60 or 60/00",
+                  "DG splits: 15/45 or 55/05",
+                  "DG splits: 21/39 or 57/03",
+                  "DG splits: 25/35 or 55/05",
+                  "DG splits: 26/34 or 35/25",
+                  "DG splits: 27/33 or 33/27",
+                  "DG splits: 28/32 or 37/23",
+                  "DG splits: 30/30 or 34/26",
+                  "DG splits: 30/30 or 39/21",
+                  "DG splits: 30/30 or 60/00",
+                  "DG splits: 30/30 or 45/15",
+                  "DG splits: 31/29 or 37/23",
+                  "DG splits: 32/28 or 35/25",
+                  "DG splits: 32/28 or 57/03",
+                  "DG splits: 33/27 or 34/26",
+                  "DG splits: 33/27 or 45/15",
+                  "DG splits: 34/26 or 55/05",
+                  "DG splits: 45/15 or 60/00",
+                  "Normative rating for 00/60 DG split",
+                  "Normative rating for 15/45 DG split",
+                  "Normative rating for 21/39 DG split",
+                  "Normative rating for 25/35 DG split",
+                  "Normative rating for 26/34 DG split",
+                  "Normative rating for 27/33 DG split",
+                  "Normative rating for 28/32 DG split",
+                  "Normative rating for 30/30 DG split",
+                  "Normative rating for 31/29 DG split",
+                  "Normative rating for 32/28 DG split",
+                  "Normative rating for 33/27 DG split",
+                  "Normative rating for 34/26 DG split",
+                  "Normative rating for 35/25 DG split",
+                  "Normative rating for 37/23 DG split",
+                  "Normative rating for 39/21 DG split",
+                  "Normative rating for 45/15 DG split",
+                  "Normative rating for 55/05 DG split",
+                  "Normative rating for 57/03 DG split",
+                  "Normative rating for 60/00 DG split",
+                  "It is OK if some groups have more of a chance in life than others",
+                  "Inferior groups should stay in their place",
+                  "To get ahead in life, it is sometimes okay to step on other groups",
+                  "We should have increased social equality",
+                  "It would be good if groups could be equal",
+                  "We should do what we can to equalise conditions for different groups",
+                  "It is always better to trust the judgment of the proper authorities in 
+                  government and religion than to listen to the noisy rabble-rousers in 
+                  our society who are trying to create doubt in people's minds",
+                  "It would be best for everyone if the proper authorities censored magazines
+                  so that people could not get their hands on trashy and disgusting material",
+                  "Our country will be destroyed some day if we do not smash the perversions
+                  eating away at our moral fibre and traditional beliefs",
+                  "People should pay less attention to The Bible and other old traditional forms
+                  of religious guidance, and instead develop their own personal standards of what
+                  is moral and immoral",
+                  "Atheists and others who have rebelled against established religions are no
+                  doubt every bit as good and virtuous as those who attend church regularly",
+                  "Some of the best people in our country are those who are challenging our 
+                  government, criticizing religion, and ignoring the 'normal way' things are 
+                  supposed to be done",
+                  "Number of balls placed in rule following bucket",
+                  "BEAST Score (Round 1)",
+                  "BEAST Score (Round 2)",
+                  "BEAST Score (Round 3)",
+                  "BEAST Score (Round 4)",
+                  "BEAST Score (Round 5)",
+                  "Positive/negative: Limited government",
+                  "Positive/negative: Welfare benefits",
+                  "Positive/negative: Gun ownership",
+                  "Positive/negative: Fiscal responsibility",
+                  "Positive/negative: Business",
+                  "Positive/negative: Abortion",
+                  "Positive/negative: Military and national security",
+                  "Positive/negative: Religion",
+                  "Positive/negative: Traditional marriage",
+                  "Positive/negative: Traditional values",
+                  "Positive/negative: The family unit",
+                  "Positive/negative: Patriotism",
+                  "Political party support",
+                  "What is the highest level of school you have completed or the highest degree you have received?",
+                  "What is your age in years?",
+                  "What is your gender?"
+                  ),
+  Type = c(rep("Binary", 18),
+           rep("Ordinal (1-4)", 19),
+           rep("Ordinal (1-7)", 12),
+           "Numeric (0-30)",
+           rep("Numeric (0-1)", 5),
+           rep("Numeric (0-100)", 12),
+           "Categorical",
+           "Ordinal (1-8)",
+           "Numeric (18-110)",
+           "Categorical")
+) %>% pander(split.cells = c(1,45,15))
+```
+
+# Analysis Plan
+
+This entire analysis pipeline has been pre-registered in a *drake* plan [@Landau2018] in an archived Github repository on the Open Science Framework with dummy data ([https://osf.io/yk46b/](https://osf.io/yk46b/)). We use the *brms* R package [@Burkner2017] running Hamiltonian Monte Carlo estimation in Stan [@Carpenter2017] to fit the following multilevel Bayesian models.
+
+## Hypothesis 1
+
+Building on @Panizza2019, we will fit the following multilevel Bayesian logistic regression model to the data:
+
+$$
+\begin{aligned}
+\text{nonselfish}_{i}&\sim\text{Bernoulli}\left(p_{i}\right)\\
+\text{logit}(p_{i})&=\alpha_{\text{part}[i]}+\beta_{\text{part}[i]}(\pi_{d}^{\text{nonself}}-\pi_{d}^{\text{self}})+\gamma_{\text{part}[i]}\text{mo}(N_{i}^{\text{nonself}}-N_{i}^{\text{self}}, \delta_{j})\\
+\begin{bmatrix}
+\alpha_{\text{part}}\\ 
+\beta_{\text{part}}\\ 
+\gamma_{\text{part}}
+\end{bmatrix}&\sim\text{MVNorm}(\begin{bmatrix}\alpha\\\beta\\\gamma\end{bmatrix},\mathbf{S})\\
+\mathbf{S}&=\begin{pmatrix}
+\sigma_{\alpha},0,0\\ 
+0,\sigma_{\beta},0\\ 
+0,0,\sigma_{\gamma}
+\end{pmatrix}
+\mathbf{R}
+\begin{pmatrix}
+\sigma_{\alpha},0,0\\ 
+0,\sigma_{\beta},0\\ 
+0,0,\sigma_{\gamma}
+\end{pmatrix}\\
+(\alpha,\beta,\gamma)&\sim\text{Normal(0,1)}\\
+(\sigma_{\alpha},\sigma_{\beta},\sigma_{\gamma})&\sim\text{Exponential(1)}\\
+\mathbf{R}&\sim\text{LKJcorr(1)}\\
+\delta&\sim\text{Dirichlet(1)}
+\end{aligned}
+$$
+
+This Bayesian multilevel logistic regression model estimates payoff-dependent and norm-dependent utility parameters for each participant ($\beta_{\text{part}}$ and $\gamma_{\text{part}}$ respectively) which, along with the random intercept ($\alpha_{\text{part}}$), predict the probability of choosing the non-selfish mini Dictator Game option. In the model, $\pi_{d}^{\text{nonself}}-\pi_{d}^{\text{self}}$ refers to the difference in dictator payoffs between the non-selfish and selfish options, and $N_{i}^{\text{nonself}}-N_{i}^{\text{self}}$ to the difference in normative evaluations between the non-selfish and selfish options. Since normative evaluations are measured on four-point Likert scales, these differences are not metric and so are estimated using monotonic effects for ordinal predictors [@Burkner2019]. For notational convenience, the *monotonic transform* is defined as $\text{mo}(x,\delta) = \sum_{i=1}^{x}\delta_{i}$.
+
+Here is the *brms* code for this model:
+
+```{r, eval=F}
+brm(nonself ~ 0 + Intercept + diffP + mo(diffN) + (1 + diffP + mo(diffN) | id),
+    data = d, family = bernoulli,
+    prior = c(prior(normal(0, 1), class = b),
+              prior(exponential(1), class = sd)))
+```
+
+Once this model is fitted, we will test Hypothesis 1 in two ways. First, we will use leave-one-out cross-validation to determine whether this model improves model fit over a null intercept-only model. Second, we will determine whether the 95% credible intervals for the $\beta$ and $\gamma$ parameters are above zero, replicating @Panizza2019.
+
+## Hypotheses 2 and 3
+
+We will expand the first model to include interaction effects between (a) the payoff-dependent utility parameter and Social Dominance Orientation, and (b) the norm-dependent utility parameter and Right Wing Authoritarianism:
+
+$$
+\begin{aligned}
+\text{nonselfish}_{i}&\sim\text{Bernoulli}\left(p_{i}\right)\\
+\text{logit}(p_{i})&=\text{intercept}+\text{payoff}+\text{norm}\\
+\text{intercept}&=\alpha_{\text{part}[i]}\\
+\text{payoff}&=\beta_{\text{1,part}[i]}(\pi_{d}^{\text{nonself}}-\pi_{d}^{\text{self}})+\beta_{2}\text{SDO}_{\text{part}[i]}+\beta_{3}\text{SDO}_{\text{part}[i]}(\pi_{d}^{\text{nonself}}-\pi_{d}^{\text{self}})\\
+\text{norm}&=\gamma_{\text{1,part}[i]}\text{mo}(N_{i}^{\text{nonself}}-N_{i}^{\text{self}}, \delta_{1,j})+\gamma_{2}\text{RWA}_{\text{part}[i]}+\gamma_{3}\text{RWA}_{\text{part}[i]}\text{mo}(N_{i}^{\text{nonself}}-N_{i}^{\text{self}}, \delta_{2,j})\\
+\begin{bmatrix}
+\alpha_{\text{part}}\\ 
+\beta_{\text{1,part}}\\ 
+\gamma_{\text{1,part}}
+\end{bmatrix}&\sim\text{MVNorm}(\begin{bmatrix}\alpha\\\beta_{1}\\\gamma_{1}\end{bmatrix},\mathbf{S})\\
+\mathbf{S}&=\begin{pmatrix}
+\sigma_{\alpha},0,0\\ 
+0,\sigma_{\beta},0\\ 
+0,0,\sigma_{\gamma}
+\end{pmatrix}
+\mathbf{R}
+\begin{pmatrix}
+\sigma_{\alpha},0,0\\ 
+0,\sigma_{\beta},0\\ 
+0,0,\sigma_{\gamma}
+\end{pmatrix}\\
+(\alpha,\beta_{1},\beta_{2},\beta_{3},\gamma_{1},\gamma_{2},\gamma_{3})&\sim\text{Normal(0,1)}\\
+(\sigma_{\alpha},\sigma_{\beta},\sigma_{\gamma})&\sim\text{Exponential(1)}\\
+\mathbf{R}&\sim\text{LKJcorr(1)}\\
+(\delta_{1},\delta_{2})&\sim\text{Dirichlet(1)}
+\end{aligned}
+$$
+
+where $\text{SDO}_{\text{part}}$ and $\text{RWA}_{\text{part}}$ refer to mean averages across all SDO and RWA items for each participant.
+
+Here is the *brms* code for this model:
+
+```{r, eval=F}
+brm(nonself ~ 0 + Intercept + diffP*sdo + mo(diffN)*rwa + (1 + diffP + mo(diffN) | id),
+    data = d, family = bernoulli,
+    prior = c(prior(normal(0, 1), class = b),
+              prior(exponential(1), class = sd)))
+```
+
+To test Hypotheses 2 and 3, we first check whether this model has improved model fit from the model without any interaction effects using leave-one-out cross-validation. We then check whether the interaction effects of interest ($\beta_{3}$ and $\gamma_{3}$) have 95% credible intervals above zero.
+
+We will determine whether these interaction parameters remain positive when additionally controlling for age and gender in the model.
+
+# References
